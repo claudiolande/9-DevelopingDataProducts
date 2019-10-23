@@ -1,0 +1,22 @@
+---
+title: "MapWithLeaflet"
+author: "Claudio Lande"
+date: "23/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(leaflet)
+library(dplyr)
+```
+
+```{r fig.width=10, fig.height=10}
+my_map <- leaflet() %>%
+addTiles()
+my_map
+```
+
+
+
