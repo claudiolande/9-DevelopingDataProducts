@@ -1,0 +1,48 @@
+---
+title: "Barcelona tourist sites"
+author: "Claudio Lande"
+date: "24/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(XML)
+library(dplyr)
+library(leaflet)
+```
+
+The map below shows Barcelona tourist sites. The information was taken from Barcelona open data portal: https://opendata-ajuntament.barcelona.cat/data/es/dataset/punts-informacio-turistica 
+
+Markers are represented in clusters and are expanded when the user zooms in the corresponding area.
+Every marker has a popup which shows the name of the site.
+
+```{r fig.width=10, fig.height=10}
+# Get data from Barcelona open data portal as an XML file
+fileUrl = "http://www.bcn.cat/tercerlloc/pits_opendata_en.xml"
+xmlFileName = "./pits_opendata_en.xml"
+
+if(!file.exists(xmlFileName)) {
+    download.file(fileUrl, destfile = xmlFileName)
+}
+
+# Parse data in XML file
+doc <- xmlTreeParse(xmlFileName, useInternalNodes = TRUE)
+xmlRootName <- xmlRoot(doc)
+sitesName      <- xpathSApply(xmlRootName, "/opendata/list_items/row/name", xmlValue)
+sitesLatitude  <- xpathSApply(xmlRootName, "/opendata/list_items/row/gmapx/text()", xmlValue)
+sitesLongitude <- xpathSApply(xmlRootName, "/opendata/list_items/row/gmapy/text()", xmlValue)
+
+# Convert coordinates into numerics
+sitesLatitude  <- sapply(sitesLatitude, as.numeric)
+sitesLongitude <- sapply(sitesLongitude, as.numeric)
+
+# Draw map
+df <- data.frame(lat = sitesLatitude, lng = sitesLongitude)
+df %>%
+    leaflet() %>%
+    addTiles() %>%
+    addMarkers(popup = sitesName, clusterOptions = markerClusterOptions())
+```
+

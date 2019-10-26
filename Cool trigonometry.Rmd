@@ -1,0 +1,35 @@
+---
+title: "Cool trigonometry"
+author: "Claudio Lande"
+date: "25/10/2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(plotly)
+```
+
+## Cool trigonometry
+This is the assignment of week 3 of Coursera Developing Data Products course. 
+
+Never thought trigonometry could be cool, huh?
+
+Look what a sine function can do!
+
+```{r cool_trigo, echo = TRUE}
+set.seed(2019-10-25)
+
+x <- rep(seq(0, 10, 0.1),10)
+y <- sapply(seq(0, 10, 0.1), function(x) rep(x,10))
+y <- as.vector(y)
+z <- sin(x-y)
+```
+
+## Fancy 3D scatter to impress reviewer
+```{r echo=FALSE, warning=FALSE, fig.height=6, fig.width=10}
+plot_ly(x = ~x, y = ~y, z = ~z, type = "scatter3d", color = ~z, 
+        opacity = 0.5, mode = "lines+markers+text", name = "Cool trigonometry")
+```
+
+## Thanks!
