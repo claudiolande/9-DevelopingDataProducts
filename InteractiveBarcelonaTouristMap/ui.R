@@ -1,11 +1,8 @@
 library(shiny)
 library(leaflet)
 
-r_colors <- rgb(t(col2rgb(colors()) / 255))
-names(r_colors) <- colors()
-
 shinyUI(fluidPage(
-    titlePanel("Barcelona tourist sites"),
+    titlePanel("Interactive Barcelona tourist map"),
     sidebarLayout(
         sidebarPanel(
             h4("Select districts"),
@@ -21,25 +18,30 @@ shinyUI(fluidPage(
             checkboxInput("SantAndreu", "Sant Andreu", value = TRUE),
             h4("Search"),
             textInput("searchString", label = NULL),
-            textOutput("nresults")
+            textOutput("nresults"),
+            width = 3
         ),
         mainPanel(
             tabsetPanel(type = "tabs", 
-                        tabPanel("Barcelona tourist sites", 
-                                 leafletOutput("mymap"),
-                                 h1(textOutput("sitename")),
-                                 htmlOutput("siteurl"),
-                                 htmlOutput("text")
-                        ),
-                        tabPanel("Instructions", br(), 
-                                 h1("Instructions"), 
-                                 p("This app is designed as a convenient tool for tourists willing to visit Barcelona as it allows to easily locate the most important tourist sites on the city map."),
-                                 p("Usage is straightforward:"),
-                                 p("- you can restrict the search to any number of city districts by selecting them on the left panel"),
-                                 p("- you can search the sites by name. The sites whose name matches the text will be shown on the map as you type."),
-                                 p("- if you click on a pin, the corresponding site name, URL and description will be displayed on the page bottom."),
-                                 p("For more information, see")
-                        ) 
+                tabPanel("Barcelona tourist sites", 
+                         leafletOutput("mymap"),
+                         h1(textOutput("sitename")),
+                         htmlOutput("siteurl"),
+                         htmlOutput("text")
+                ),
+                tabPanel("Instructions", br(), 
+                     h1("Instructions"), 
+                     p("This app is designed as a convenient tool for tourists willing to visit Barcelona as it allows to easily locate the most important tourist sites on the city map."),
+                     p("Usage is straightforward:"),
+                     p("- you can restrict the search to any number of city districts by selecting them on the left panel"),
+                     p("- you can search the sites by name. The sites whose name matches the text will be shown on the map as you type."),
+                     p("- if you click on a pin"),
+                     p("-- the corresponding site name will be displayed on top of the pin"),
+                     p("-- the corresponding site name, URL and description will be displayed on the page bottom."),
+                     p("For more information about the application, please see:"),
+                     a("http://rpubs.com/claudiolande/InteractiveBarcelonaTouristMap", 
+                       href = "http://rpubs.com/claudiolande/InteractiveBarcelonaTouristMap")
+                ) 
             )
         )
     )
